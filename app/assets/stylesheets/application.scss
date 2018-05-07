@@ -70,6 +70,11 @@ body, body > p, body > ol, body > ul, body > td {margin: 8px !important}
         list-style: none;
         text-align: center;
 
+        &.time {
+          margin-top: 8px;
+          color: #99cc99;
+        }
+
         a {
           color: #bfb;
           font-size: small;
