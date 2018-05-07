@@ -31,7 +31,7 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   def new_product(image_url)
-    Product.new(title: 'My Book',
+    Product.new(title: 'My Book is very good',
                 description: 'wahahahhaha',
                 price: 13.50,
                 image_url: image_url)
@@ -40,7 +40,6 @@ class ProductTest < ActiveSupport::TestCase
   test "image url test" do
     ok = %w{fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg http://a.b.c/x/y/z/fred.gif}
     bad = %w{fred.doc fred.gif/more fred.gif.more}
-    product = new_product('')
 
     ok.each do |name|
       assert new_product(name).valid?, "#{name} shouldn't be invalid"
@@ -58,5 +57,23 @@ class ProductTest < ActiveSupport::TestCase
                           image_url: "fred.gif")
     assert product.invalid?
     assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
+  end
+
+  def new_product_with_title(title)
+    Product.new(title: title,
+                price: products(:ruby).price,
+                image_url: products(:ruby).image_url,
+                description: products(:ruby).description
+    )
+  end
+
+  test "product title must be longer than 10" do
+    ok = "1234567890"
+    bad = "123456789"
+    product = new_product_with_title(ok)
+    assert product.valid?, "#{ok} shouldn't be invalid"
+
+    product = new_product_with_title(bad)
+    assert product.invalid?, "#{bad} shouldn't be valid"
   end
 end
