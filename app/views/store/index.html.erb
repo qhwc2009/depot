@@ -13,8 +13,15 @@
         </div>
         <div class="price_line">
           <span class="price"><%= number_to_currency product.price, unit: "$", negative_format: "(%n%u)" %></span>
+          <%= button_to 'Add To Cart', line_items_path(product_id: product) %>
         </div>
       </div>
     <% end %>
   <% end %>
+<% end %>
+
+<div class="counter"><%= pluralize session[:counter], "mouse" %></div>
+
+<% if session[:counter] && session[:counter] > 5 %>
+  <div class="counter"><%= session[:counter] %></div>
 <% end %>
