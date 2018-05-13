@@ -34,7 +34,7 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       if @line_item.save
         clean_counter
-        format.html { redirect_to @line_item.cart, notice: 'Line item was successfully created.' }
+        format.html { redirect_to store_index_url }
         format.json { render :show, status: :created, location: @line_item }
       else
         format.html { render :new }
@@ -62,7 +62,7 @@ class LineItemsController < ApplicationController
   def destroy
     @line_item.destroy
     respond_to do |format|
-      format.html { redirect_to line_items_url, notice: 'Line item was successfully destroyed.' }
+      format.html { redirect_to cart_url(@line_item.cart_id), notice: 'Line item was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -78,6 +78,5 @@ class LineItemsController < ApplicationController
       params.require(:line_item).permit(:product_id)
     end
 end
-
 
 
