@@ -2,8 +2,8 @@ class LineItemsController < ApplicationController
   include CurrentCart
   include CounterControl
 
-  before_action :set_cart, only: [:create]
-  before_action :set_line_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_cart, only: [:create, :decrement]
+  before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement]
 
   # GET /line_items
   # GET /line_items.json
@@ -35,7 +35,7 @@ class LineItemsController < ApplicationController
       if @line_item.save
         clean_counter
         format.html { redirect_to store_index_url }
-        format.js
+        format.js { @current_item = @line }
         format.json { render :show, status: :created, location: @line_item }
       else
         format.html { render :new }
@@ -54,6 +54,25 @@ class LineItemsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def decrement
+    respond_to do |format|
+      if @line_item.quantity == 1
+        @line_item.destroy
+        if !@cart.line_items.present?
+          @cart.destroy
+        end
+        format.html {render 'destroy'}
+        format.js
+        format.json {head :ok}
+      else
+        @line_item.update_attribute(:quantity, @line_item.quantity -= 1)
+        format.html {redirect_to store_index_url}
+        format.js {@current_item = @line_item}
+        format.json {head :ok}
       end
     end
   end

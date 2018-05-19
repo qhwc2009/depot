@@ -1,0 +1,11 @@
+      invoke  active_record
+   identical    db/migrate/20180517152508_create_orders.rb
+   identical    app/models/order.rb
+      invoke    test_unit
+   identical      test/models/order_test.rb
+   identical      test/fixtures/orders.yml
+      invoke  resource_route
+       route    resources :orders
+      invoke  scaffold_controller
+    conflict    app/controllers/orders_controller.rb
+  Overwrite /Users/apple/Desktop/depotProject/depot/app/controllers/orders_controller.rb? (enter "h" for help) [Ynaqdh] 
