@@ -8,12 +8,16 @@ Rails.application.routes.draw do
   end
 
   resources :users
-  resources :orders
-  resources :line_items do
-    put 'decrement', on: :member
+
+  scope '(:locale)' do
+    resources :carts
+    resources :orders
+    resources :line_items do
+      put 'decrement', on: :member
+    end
+    root 'store#index', as: 'store_index', via: :all
   end
-  resources :carts
-  root 'store#index', as: 'store_index'
+
 
   resources :products do
     get :who_bought, on: :member
